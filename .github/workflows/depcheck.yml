@@ -3,7 +3,7 @@ name: Check dependencies
 on:
   push: # for testing purposes, remove before merge
     branches:
-    - "feat/PL-2991-depcheck"
+    - "main"
   schedule:
     - cron: '0 0 * * 1'
 jobs:
