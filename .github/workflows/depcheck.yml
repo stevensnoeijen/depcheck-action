@@ -12,8 +12,9 @@ jobs:
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
-      - uses: ./.github/actions/depcheck
+      - name: Check node dependencies
         id: depcheck
+        uses: ./.github/actions/depcheck.yml
         with:
           dir: test/
       - run: Depcheck results ${{ steps.depcheck.outputs.exit_code }}
