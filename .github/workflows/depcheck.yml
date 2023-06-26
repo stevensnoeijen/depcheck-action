@@ -1,0 +1,17 @@
+name: Check dependencies
+
+on:
+  push: # for testing purposes, remove before merge
+    branches:
+    - "feat/PL-2991-depcheck"
+  schedule:
+    - cron: '0 0 * * 1'
+jobs:
+  run-depcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+      - uses: tj-actions/depcheck@v9
+        id: depcheck
+      - run: Depcheck results ${{ steps.depcheck.outputs.exit_code }}
