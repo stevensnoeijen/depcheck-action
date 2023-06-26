@@ -17,4 +17,7 @@ jobs:
         uses: ./.github/actions/depcheck/
         with:
           dir: test/
-      - run: Depcheck results ${{ steps.depcheck.outputs.exit_code }}
+      - name: Log unused dependencies
+        run: |
+          UNUSED_DEPENDENCIES="${{ steps.depcheck.outputs.exit_code }}"
+          ECHO "$UNUSED_DEPENDENCIES"
