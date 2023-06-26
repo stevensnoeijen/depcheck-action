@@ -19,5 +19,4 @@ jobs:
           dir: test/
       - name: Log unused dependencies
         run: |
-          UNUSED_DEPENDENCIES="${{ steps.depcheck.outputs.exit_code }}"
-          ECHO "$UNUSED_DEPENDENCIES"
+          echo "${{ steps.depcheck.outputs.UNUSED_JSON }}"
