@@ -1,0 +1,37 @@
+name: Run depcheck
+description: Analyze npm project dependencies
+
+inputs:
+  dir:
+    description: 'The directory to run [depcheck](https://github.com/depcheck/depcheck#readme)'
+    required: false
+    default: '.'
+  ignores:
+    description: 'Comma separated list of packages to ignore'
+    required: false
+    default: ''
+  version:
+    description: 'Version of [depcheck](https://github.com/depcheck/depcheck/tags)'
+    required: false
+    default: '1.4.3'
+
+outputs:
+  exit_code:
+    description: 'depcheck exit code'
+    value: ${{ steps.depcheck.outputs.exit_code }}
+
+
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        bash ./entrypoint.sh
+      id: depcheck
+      shell: bash
+      env:
+        INPUT_DIR: ${{ inputs.dir }}
+        INPUT_IGNORES: ${{ inputs.ignores }}
+        INPUT_VERSION: ${{ inputs.version }}
+branding:
+  icon: check-square
+  color: white

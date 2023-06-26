@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
-      - uses: tj-actions/depcheck@v9
+      - uses: ./.github/actions/depcheck
         id: depcheck
         with:
           dir: test/
