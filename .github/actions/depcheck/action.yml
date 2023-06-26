@@ -19,6 +19,9 @@ outputs:
   exit_code:
     description: 'depcheck exit code'
     value: ${{ steps.depcheck.outputs.exit_code }}
+  unused_json:
+    description: 'depcheck unused json object'
+    value: ${{ steps.depcheck.outputs.unused_json }}
 
 
 runs:
