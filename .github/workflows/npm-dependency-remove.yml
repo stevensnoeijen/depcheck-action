@@ -1,7 +1,5 @@
 name: Npm dependency remove
 
-env:
-    DEFAULT_PATH: ${{ github.workspace }}
 
 on:
   workflow_dispatch:
@@ -12,7 +10,7 @@ on:
         path:
           required: false
           type: string
-          default: "${{ env.DEFAULT_PATH }}"
+          default: "./"
   workflow_call:
     inputs:
       dependency:
@@ -21,7 +19,7 @@ on:
       path:
         required: false
         type: string
-        default: "${{ env.DEFAULT_PATH }}"
+        default: "./"
 
 jobs:
   removeDependency:
