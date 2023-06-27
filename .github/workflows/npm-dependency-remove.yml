@@ -1,5 +1,10 @@
 name: Npm dependency remove
 on:
+  workflow_dispatch:
+    inputs:
+        dependency:
+          required: true
+          type: string
   workflow_call:
     inputs:
       dependency:
