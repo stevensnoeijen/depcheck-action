@@ -7,8 +7,10 @@ on:
   schedule:
     - cron: '0 0 * * 1'
 jobs:
-  run-depcheck:
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.depcheck_dependencies }}
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
@@ -17,6 +19,20 @@ jobs:
         uses: ./.github/actions/depcheck/
         with:
           dir: test/
-      - name: Log unused dependencies
+      - id: matrix
+        name: Get unused dependencies
         run: |
-          echo "${{ steps.depcheck.outputs.UNUSED_JSON }}"
+          echo "depcheck_dependencies=\"${{ steps.depcheck.outputs.unused_json }}\" | jq '.dependencies[]'" >> $GITHUB_ENV
+          # echo "devcheck_devDependencies\"${{ steps.depcheck.outputs.unused_json }}\" | jq '.devDependencies[]'" >> $GITHUB_ENV
+
+  cleanup:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{fromJson(needs.setup.outputs.matrix)}}
+    steps:
+      - name: remove unused dependencies
+        uses: stevensnoeijen/depcheck-workflow/.github/workflows/npm-dependency-remove.yml@main
+        with:
+          dependency: "${{ matrix.value }}"
