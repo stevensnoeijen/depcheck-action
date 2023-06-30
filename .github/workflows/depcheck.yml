@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Check node dependencies
         id: depcheck
-        uses: ./.github/actions/depcheck/
+        uses: ./.github/actions/depcheck
         with:
           dir: test/
       - id: matrix
@@ -33,6 +33,6 @@ jobs:
         value: ${{fromJson(needs.setup.outputs.matrix)}}
     steps:
       - name: remove unused dependencies
-        uses: stevensnoeijen/depcheck-workflow/.github/workflows/npm-dependency-remove.yml@main
+        uses: ./.github/workflows/npm-dependency-remove.yml
         with:
           dependency: "${{ matrix.value }}"
