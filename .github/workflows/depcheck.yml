@@ -22,7 +22,7 @@ jobs:
       - id: matrix
         name: Get unused dependencies
         run: |
-          dependencies=$(echo ${{ steps.depcheck.outputs.unused_json }} | jq '.dependencies')
+          dependencies=$(echo "${{ steps.depcheck.outputs.unused_json }}" | jq 'fromjson .dependencies' | jq -Rsa .)
           echo "depcheck_dependencies=$dependencies" >> $GITHUB_ENV
           # echo "devcheck_devDependencies\"${{ steps.depcheck.outputs.unused_json }}\" | jq '.devDependencies'" >> $GITHUB_ENV
 
