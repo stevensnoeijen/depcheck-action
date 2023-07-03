@@ -33,6 +33,8 @@ jobs:
       matrix:
         value: ${{fromJson(needs.setup.outputs.matrix)}}
     steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
       - name: remove unused dependencies
         uses: ./.github/workflows/npm-dependency-remove.yml
         with:
