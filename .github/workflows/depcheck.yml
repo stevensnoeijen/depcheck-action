@@ -28,15 +28,10 @@ jobs:
 
   cleanup:
     needs: [setup]
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         value: ${{fromJson(needs.setup.outputs.matrix)}}
-    steps:
-      - name: Checkout git repository
-        uses: actions/checkout@v3
-      - name: remove unused dependencies
-        uses: ./.github/workflows/npm-dependency-remove.yml
-        with:
-          dependency: "${{ matrix.value }}"
-          path: test/
+    uses: ./.github/workflows/npm-dependency-remove.yml
+    with:
+      dependency: "${{ matrix.value }}"
+      path: test/
