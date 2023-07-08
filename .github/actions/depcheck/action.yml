@@ -16,16 +16,16 @@ inputs:
     default: '1.4.3'
 
 outputs:
-  unused_json:
-    description: 'depcheck unused json object'
-    value: ${{ steps.depcheck.outputs.unused_json }}
+  result_json:
+    description: 'depcheck result object as json'
+    value: ${{ steps.depcheck.outputs.result_json }}
 
 
 runs:
   using: 'composite'
   steps:
     - run: |
-        echo "unused_json=$(npx --yes depcheck@"${INPUT_VERSION}" --ignores="${INPUT_IGNORES}" "${INPUT_DIR}" --json | jq -Rsa . | sed 's/\\[tn]//g')" >> "$GITHUB_OUTPUT"
+        echo "result_json=$(npx --yes depcheck@"${INPUT_VERSION}" --ignores="${INPUT_IGNORES}" "${INPUT_DIR}" --json | jq -Rsa . | sed 's/\\[tn]//g')" >> "$GITHUB_OUTPUT"
       id: depcheck
       shell: bash
       env:
