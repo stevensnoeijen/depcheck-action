@@ -1,9 +1,7 @@
 name: Check dependencies
 
 on:
-  push: # for testing purposes, remove before merge
-    branches:
-    - "main"
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 1'
 jobs:
