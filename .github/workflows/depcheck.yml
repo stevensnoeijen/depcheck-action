@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
+      devDependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
@@ -42,10 +43,32 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           committer: GitHub <noreply@github.com>
-          commit-message: Remove dependency ${{ matrix.value }}
-          title: Remove dependency ${{ matrix.value }}
+          commit-message: Remove unused dependency ${{ matrix.value }}
+          title: Remove unused dependency ${{ matrix.value }}
           body: 
           branch: depcheck/remove-dependency-${{ matrix.value }}
           delete-branch: true
 
+  cleanup-dev-dependencies:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{fromJson(needs.setup.outputs.devDependencies_matrix)}}
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+      - name: Npm remove
+        run: |
+          cd test/
+          npm remove ${{ matrix.value }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          committer: GitHub <noreply@github.com>
+          commit-message: Remove unused dev dependency ${{ matrix.value }}
+          title: Remove unused dev dependency ${{ matrix.value }}
+          body: 
+          branch: depcheck/remove-dev-dependency-${{ matrix.value }}
+          delete-branch: true
   
