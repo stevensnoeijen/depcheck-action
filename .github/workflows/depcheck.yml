@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       dependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
-      devDependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
+      devDependencies_matrix: ${{ steps.matrix.outputs.devDependencies }}
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
