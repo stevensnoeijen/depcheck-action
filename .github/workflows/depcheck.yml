@@ -10,6 +10,7 @@ jobs:
     outputs:
       dependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
       devDependencies_matrix: ${{ steps.matrix.outputs.devDependencies }}
+      missing_matrix: ${{ steps.matrix.outputs.devDependencies }}
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
@@ -25,6 +26,8 @@ jobs:
           echo "dependencies=$dependencies" >> $GITHUB_OUTPUT
           devDependencies=$(echo ${{ steps.depcheck.outputs.result_json }} | jq '.devDependencies' -c)
           echo "devDependencies=$devDependencies" >> $GITHUB_OUTPUT
+          missing=$(echo ${{ steps.depcheck.outputs.result_json }} | jq '.missing | keys' -c)
+          echo "missing=$missing" >> $GITHUB_OUTPUT
 
   cleanup-dependencies:
     needs: [setup]
@@ -70,5 +73,28 @@ jobs:
           title: Remove unused dev dependency ${{ matrix.value }}
           body: 
           branch: depcheck/remove-dev-dependency-${{ matrix.value }}
+          delete-branch: true
+
+  add-missing-dependencies:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{fromJson(needs.setup.outputs.missing_matrix)}}
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+      - name: Npm install
+        run: |
+          cd test/
+          npm install ${{ matrix.value }} --save-dev
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          committer: GitHub <noreply@github.com>
+          commit-message: Added missing dependency ${{ matrix.value }}
+          title: Added missing dependency ${{ matrix.value }}
+          body: 
+          branch: depcheck/add-dependency-${{ matrix.value }}
           delete-branch: true
   
