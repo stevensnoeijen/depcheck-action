@@ -1,4 +1,4 @@
-name: Check dependencies
+name: Depcheck
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ jobs:
     outputs:
       dependencies_matrix: ${{ steps.matrix.outputs.dependencies }}
       devDependencies_matrix: ${{ steps.matrix.outputs.devDependencies }}
-      missing_matrix: ${{ steps.matrix.outputs.devDependencies }}
+      missing_matrix: ${{ steps.matrix.outputs.missing }}
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
