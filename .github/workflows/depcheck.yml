@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * 1'
+
+env:
+  PATH: test/
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -18,7 +22,7 @@ jobs:
         id: depcheck
         uses: ./
         with:
-          dir: test/
+          dir: ${{ vars.PATH }}
       - id: matrix
         name: Get unused dependencies
         run: |
@@ -40,7 +44,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Npm remove
         run: |
-          cd test/
+          cd $PATH
           npm remove ${{ matrix.value }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -63,7 +67,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Npm remove
         run: |
-          cd test/
+          cd $PATH
           npm remove ${{ matrix.value }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -86,7 +90,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Npm install
         run: |
-          cd test/
+          cd $PATH
           npm install ${{ matrix.value }} --save-dev
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
