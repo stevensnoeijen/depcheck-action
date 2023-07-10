@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  PATH: test/
+  WORKSPACE: test/
 
 jobs:
   setup:
@@ -22,7 +22,7 @@ jobs:
         id: depcheck
         uses: ./
         with:
-          dir: ${{ env.PATH }}
+          dir: ${{ env.WORKSPACE }}
       - id: matrix
         name: Get unused dependencies
         run: |
