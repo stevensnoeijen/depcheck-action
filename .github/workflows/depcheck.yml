@@ -92,8 +92,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           committer: GitHub <noreply@github.com>
-          commit-message: Added missing dependency ${{ matrix.value }}
-          title: Added missing dependency ${{ matrix.value }}
+          commit-message: Add missing dependency ${{ matrix.value }}
+          title: Add missing dependency ${{ matrix.value }}
           body: 
           branch: depcheck/add-dependency-${{ matrix.value }}
           delete-branch: true
