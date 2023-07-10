@@ -22,7 +22,7 @@ jobs:
         id: depcheck
         uses: ./
         with:
-          dir: ${{ vars.PATH }}
+          dir: ${{ env.PATH }}
       - id: matrix
         name: Get unused dependencies
         run: |
